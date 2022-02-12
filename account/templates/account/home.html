@@ -1,0 +1,65 @@
+{% extends 'account/base.html' %}
+
+{% block main %}
+<div class="card-body table-responsive ">
+  <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>عنوان</th>
+          <th>نویسنده</th>
+          <th>عکس</th>
+          <th>آدرس</th>
+          <th>متن</th>
+          <th>دسته بندی</th>
+          <th>زمان انتشار</th>
+          <th>مقاله ویژه</th>
+          <th>وضعیت</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for article in object_list %}
+        <tr>
+          <td>
+            {% if article.status in 'bd'|make_list or user.is_superuser %}
+            <a href="{% url 'account:update' article.pk %}">{{article.title}}</a>
+            {% else %}
+            {{article.title}}
+            {% endif %}
+          </td>
+          <td>{{article.author}}</td>
+          <td><img width=100 src='{{article.image.url}}'></td>
+          <td>{{article.slug}}</td>
+          
+          <td>{{article.description|truncatechars:100}}</td>
+          <td>{{article.category_str_admin}}</td>
+          <td>{{article.jpublish}}</td>
+          <td>{% if article.is_special %}<i class='fa fa-check-circle' style='color:green'></i>
+            {% else %}
+            <i class='fa fa-minus-circle' style='color:red'></i>
+            {% endif %}</td>
+          <td >{% if article.status == 'p' %}
+          <span class='badge badge-success'>منتشر شده</span>
+            {% elif article.status == 'i'%}
+            <span class='badge badge-success'> درحال بررسی</span>
+            {% if user.is_superuser %}
+            <a href="{% url 'blog:article_preview' article.pk%}" class='badge badge-secondary'>پیش نمایش</a>
+            {% endif %}
+          
+            {% else %}
+            {% if article.status == 'd' %}
+            <span class='badge badge-primary'>پیش نویس</span>
+              {% else%}
+              <span class="badge badge-warning">برگشت داده شده</span>
+            {% endif %}
+        <a href="{% url 'blog:article_detail' article.slug%}" class='badge badge-primary'>نمایش در سایت</a>
+        {% endif %}
+        {% if user.is_superuser %}<span class='badge badge-danger'><a href="{% url 'account:delete' article.pk%}"> حذف</a></span>{% endif %}
+      
+      </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+{% endblock main %}

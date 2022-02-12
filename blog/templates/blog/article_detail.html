@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}{{article.title}}{% endblock title %}
+
+
+{% block articles %}
+<header class="masthead" style="background-image: url('{{article.image.url}}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h2></h2>
+                    <span class="subheading"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <!-- Post preview-->
+            
+            <div class="post-preview">
+                
+                <a href="{% url 'blog:article_detail' article.slug%}">
+                    <h2 class="post-title">{{article.title}}</h2>
+                </a>
+                {% if user.is_authenticated and user.is_special or article.author == user or user.is_superuser %}
+                    <h3 class="post-subtitle">{{article.description}}</h3>
+                    {% else %}
+                    <h3 class="post-subtitle">{{article.description|truncatechars:150}}</h3>
+                    <hr>
+                    <h3 style='color:red'>برای دسترسی به همه مقاله 
+                      <a href='#'>اشتراک</a>  تهیه بفرمایید.
+                    </h3>
+                    {% endif %}
+                <p class="post-meta">
+                    نویسنده:
+                    <a href="#!">ادمین</a>
+                    <p>{{article.jpublish}}</p>
+                </p>
+            </div>
+            <!-- Divider-->
+            <hr class="my-4" />
+            
+            <!-- Pager-->
+      
+        </div>
+    </div>
+</div>
+
+{% endblock articles %}

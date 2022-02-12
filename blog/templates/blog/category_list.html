@@ -1,0 +1,12 @@
+{% extends 'blog/list.html' %}
+{% block title %}
+{{category.title}}
+{% endblock title %}
+
+{% block pagination_url_next %}
+{% url 'blog:category' category.slug %}?page={{ page_obj.next_page_number }}
+{% endblock pagination_url_next %}
+
+{% block pagination_url_previous %}
+{% url 'blog:category' category.slug %}?page={{ page_obj.previous_page_number }}
+{% endblock pagination_url_previous %}

@@ -1,0 +1,10 @@
+body {
+    
+   direction: rtl;
+   text-align: left;
+    
+}
+
+.navbar-nav{
+    padding-right: 500px;
+}
